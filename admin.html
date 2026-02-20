@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Shourya Infra Solar Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            background: #f97316;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .admin-header h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .admin-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .admin-section h2 {
+            color: #f97316;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="file"],
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group input[type="file"] {
+            padding: 8px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            background: #f97316;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #d65a0e;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: #fff;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-item-actions {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 10px;
+            border-radius: 0 0 0 8px;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+        .preview-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+        }
+
+        .success-message {
+            background: #28a745;
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message {
+            background: #dc3545;
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .admin-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .admin-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>🌞 Admin Panel</h1>
+            <p>Manage Project Images & Work Section</p>
+        </div>
+
+        <div class="admin-section">
+            <h2>Upload New Project Image</h2>
+            
+            <div id="successMessage" class="success-message">Image uploaded successfully!</div>
+            <div id="errorMessage" class="error-message">Error uploading image. Please try again.</div>
+
+            <form id="uploadForm">
+                <div class="form-group">
+                    <label for="projectTitle">Project Title</label>
+                    <input type="text" id="projectTitle" placeholder="e.g., 5KW Rooftop System" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="projectImage">Upload Image</label>
+                    <input type="file" id="projectImage" accept="image/*" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="projectDescription">Project Description (Optional)</label>
+                    <textarea id="projectDescription" placeholder="Brief description of the project..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">📤 Upload Image</button>
+            </form>
+
+            <div class="preview-section">
+                <h3>📸 Uploaded Projects</h3>
+                <div id="galleryPreview" class="gallery-grid">
+                    <!-- Projects will be displayed here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h2>📝 Instructions</h2>
+            <ul style="line-height: 1.8; color: #555;">
+                <li>Upload high-quality project images (JPG, PNG recommended)</li>
+                <li>Images will be stored in localStorage (browser storage)</li>
+                <li>Maximum recommended file size: 5MB per image</li>
+                <li>For production, integrate with a backend server/database</li>
+                <li>Click delete button to remove images from the gallery</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Initialize gallery from localStorage
+        function initGallery() {
+            const projects = JSON.parse(localStorage.getItem('solarProjects')) || [];
+            displayGallery(projects);
+        }
+
+        // Display gallery items
+        function displayGallery(projects) {
+            const gallery = document.getElementById('galleryPreview');
+            gallery.innerHTML = '';
+
+            if (projects.length === 0) {
+                gallery.innerHTML = '<p style="grid-column: 1/-1; color: #999; text-align: center;">No projects uploaded yet</p>';
+                return;
+            }
+
+            projects.forEach((project, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `
+                    <img src="${project.image}" alt="${project.title}">
+                    <div class="gallery-item-actions">
+                        <button class="delete-btn" onclick="deleteProject(${index})">Delete</button>
+                    </div>
+                    <div style="padding: 10px;">
+                        <h4 style="color: #333; margin-bottom: 5px;">${project.title}</h4>
+                        <p style="font-size: 0.85rem; color: #777;">${project.description || 'No description'}</p>
+                    </div>
+                `;
+                gallery.appendChild(item);
+            });
+        }
+
+        // Handle form submission
+        document.getElementById('uploadForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const title = document.getElementById('projectTitle').value;
+            const description = document.getElementById('projectDescription').value;
+            const imageInput = document.getElementById('projectImage');
+            const file = imageInput.files[0];
+
+            if (!file) {
+                showError('Please select an image');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const imageData = event.target.result;
+
+                // Get existing projects
+                const projects = JSON.parse(localStorage.getItem('solarProjects')) || [];
+
+                // Add new project
+                projects.push({
+                    title: title,
+                    description: description,
+                    image: imageData
+                });
+
+                // Save to localStorage
+                localStorage.setItem('solarProjects', JSON.stringify(projects));
+
+                // Reset form
+                document.getElementById('uploadForm').reset();
+                
+                // Show success message
+                showSuccess('Image uploaded successfully!');
+
+                // Refresh gallery
+                displayGallery(projects);
+
+                // Update main page
+                updateMainPageGallery(projects);
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        // Delete project
+        function deleteProject(index) {
+            if (confirm('Are you sure you want to delete this project?')) {
+                const projects = JSON.parse(localStorage.getItem('solarProjects')) || [];
+                projects.splice(index, 1);
+                localStorage.setItem('solarProjects', JSON.stringify(projects));
+                displayGallery(projects);
+                updateMainPageGallery(projects);
+                showSuccess('Project deleted successfully!');
+            }
+        }
+
+        // Update main page gallery
+        function updateMainPageGallery(projects) {
+            // This would sync with the main index.html
+            // For now, we'll store it and you can implement this on the main page
+        }
+
+        // Show success message
+        function showSuccess(msg) {
+            const successMsg = document.getElementById('successMessage');
+            successMsg.textContent = msg;
+            successMsg.style.display = 'block';
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+        }
+
+        // Show error message
+        function showError(msg) {
+            const errorMsg = document.getElementById('errorMessage');
+            errorMsg.textContent = msg;
+            errorMsg.style.display = 'block';
+            setTimeout(() => {
+                errorMsg.style.display = 'none';
+            }, 3000);
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', initGallery);
+    </script>
+</body>
+</html>
